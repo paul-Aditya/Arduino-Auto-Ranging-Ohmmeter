@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto-Ranging Ohmmeter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      box-shadow: #333;
+      color: #333;
+    }
+
+    #resistanceValue {
+      font-size: 48px;
+      color: #4CAF50;
+      margin: 20px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Arduino Auto-Ranging Ohmmeter</h1>
+    <div id="resistanceValue">0 Ω</div>
+    <button onclick="getResistance()">Get Resistance</button>
+  </div>
+
+  <script>
+    // This function simulates fetching the resistance from the Arduino
+    function getResistance() {
+      // Perform a GET request to the FastAPI endpoint
+      fetch('http://127.0.0.1:8000/')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();  // parse the JSON response
+        })
+        .then(data => {console.log('Response:', data)
+          console.log(data)
+          document.getElementById('resistanceValue').textContent = data['resistance'] + " Ω";
+        })
+      .catch(error => console.error('Fetch error:', error));
+
+      
+    }
+  </script>
+
+</body>
+</html>
